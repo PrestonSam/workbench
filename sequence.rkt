@@ -4,7 +4,8 @@
          racket/sequence
          workbench/define)
 
-(provide in-choosing-sequence)
+(provide in-choosing-sequence
+         in-value/cycle)
 
 (define (in-choosing-sequence seq choose-proc . choices)
     (define choice-seqs
@@ -26,3 +27,7 @@
                  chosen-idx)))
     
     (sequence-map seq-val->chosen-val seq))
+
+(define (in-value/cycle #:prefix-seq [seq (in-list '())] value)
+  (in-sequences seq
+                (in-cycle (in-value value))))

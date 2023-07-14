@@ -30,6 +30,7 @@
          false-if-null
          map*
          sort*
+         take-up-to
          zip/2d)
 
 (define-syntax-parser for/append
@@ -146,6 +147,13 @@
            (~? (~@ #:cache-keys? cache-keys?)))]
   [(_ lst:expr)
    #'lst])
+
+(define (take-up-to lst idx)
+  (cond
+    [(< idx (length lst))
+     (take lst idx)]
+    [else
+     lst]))
 
 (define (maybe-cons v lst)
   (if v

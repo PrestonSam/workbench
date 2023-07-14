@@ -52,7 +52,8 @@
   (~> str
       (regexp-match* pascalcase-word-regexp _)
       (map (compose upcase-first-letter string-downcase) _)
-      (apply string-append _)))
+      (apply string-append _)
+      downcase-first-letter))
 
 (define (string-screaming-snakecase str)
   (~> str

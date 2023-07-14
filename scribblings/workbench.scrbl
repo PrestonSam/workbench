@@ -9,7 +9,7 @@
                      racket/string
                      racket/port
                      racket/function
-                     sam-utils
+                     workbench
                      log-once
                      adjutor/unstable]
          racket/format

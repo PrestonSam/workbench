@@ -93,14 +93,20 @@
   (and response
        (sequence-ref seq (sub1 response))))
 
-(define (ask/list lst prompt-proc [read-fn read-line])
+;; Prompt the user for a series of values, read using `read-proc`
+;; Each of the values in `lst` is converted into a prompt using `prompt-proc` and shown to the user
+;; The user's responses are collected as they give them
+;; If a user is dissatisfied with an input they have given, they can type "undo" to return to the previous input
+;; This operation can be repeated any number of times.
+;; The user can also end the operation prematurely by typing "end". This will return whatever values they have submitted thus far.
+(define (ask/list lst prompt-proc [read-proc read-line])
   (let loop ([input-items lst]
              [visited-items null]
              [output null])
     (match input-items
       [`(,input-item . ,other-inputs)
        (displayln (prompt-proc input-item))
-       (match* ((read-fn) visited-items)
+       (match* ((read-proc) visited-items)
          [("end" _) (reverse output)]
          [("undo" `(,visited-item . ,other-visited))
           (loop `(,visited-item . ,input-items)
