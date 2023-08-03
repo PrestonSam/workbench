@@ -14,7 +14,7 @@
          printfln
          in-printing-sequence
          in-prompted-lines
-         predicate->validator-transform
+         check
          ask
          ask/choose
          ask/list
@@ -45,12 +45,21 @@
                 (read-line in mode))
                eof-object?))
 
-(define ((predicate->validator-transform proc) v)
+(define ((check proc) v)
   (and (proc v)
        v))
 
-(define (ask msg [valid?/transform identity] [escape-string #f] [err-msg "Please enter a valid response"])
-  (displayln msg)
+(define (ask msg
+             [valid?/transform identity]
+             #:same-line? [same-line #f]
+             [escape-string #f]
+             [err-msg "Please enter a valid response"])
+  (cond
+    [same-line
+     (display msg)
+     (display #\space)]
+    [else
+     (displayln msg)])
 
   (define*
     [#:λ (is-escape-string? value)
@@ -101,8 +110,8 @@
 ;; The user can also end the operation prematurely by typing "end". This will return whatever values they have submitted thus far.
 (define (ask/list lst prompt-proc [read-proc read-line])
   (let loop ([input-items lst]
-             [visited-items null]
-             [output null])
+             [visited-items '()]
+             [output '()])
     (match input-items
       [`(,input-item . ,other-inputs)
        (displayln (prompt-proc input-item))
@@ -112,6 +121,8 @@
           (loop `(,visited-item . ,input-items)
                 other-visited
                 (cdr output))]
+         [("undo" '())
+          (loop input-items '() '())]
          [(value _)
           (loop other-inputs
                 `(,input-item . ,visited-items)
