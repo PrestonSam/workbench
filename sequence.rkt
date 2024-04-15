@@ -5,7 +5,8 @@
          workbench/define)
 
 (provide in-choosing-sequence
-         in-value/cycle)
+         in-value/cycle
+         sequence-take)
 
 (define (in-choosing-sequence seq choose-proc . choices)
     (define choice-seqs
@@ -31,3 +32,20 @@
 (define (in-value/cycle #:prefix-seq [seq (in-list '())] value)
   (in-sequences seq
                 (in-cycle (in-value value))))
+
+#;(define (in-folder path)
+  ())
+
+(define (sequence-take seq limit)
+  (let ([count 0])
+    (stop-before
+     seq
+     (λ (_)
+       (or (= limit count)
+           (begin0 #f (set! count (add1 count))))))))
+
+(define (sequence-drop seq limit)
+    (define* [(more? next) (sequence-generate seq)])
+    (for ([n (in-range limit)]) (next))
+    (in-producer (λ () (if (more?) (next) eof))
+                 eof))

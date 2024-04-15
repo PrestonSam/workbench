@@ -1,7 +1,6 @@
 #lang racket/base
 
 (require racket/match
-         syntax/parse
          (for-syntax racket/base
                      syntax/parse)
          workbench/define

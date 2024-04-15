@@ -1,27 +1,28 @@
 #lang scribble/manual
 
-@require[@for-label[sam-utils
+@require[@for-label[workbench
                     racket/base]
          @for-syntax[racket/base
                      scribble/manual
                      racket/format
-                     racket/list
                      racket/string
                      racket/port
                      racket/function
-                     workbench
+                     workbench/condition
+                     workbench/define
+                     workbench/sequence
+                     workbench/string
+                     workbench/list
+                     workbench/interactive
+                     workbench/regexp
                      log-once
                      adjutor/unstable]
-         racket/format
-         racket/contract
-         racket/list
-         racket/sequence
          syntax/parse/define]
 
-@title{sam-utils}
-@author{sam}
+@title{Workbench}
+@author{sampr}
 
-@defmodule[sam-utils]
+@defmodule[workbench]
 
 Package Description Here
 
@@ -222,15 +223,6 @@ Package Description Here
  ]
 }
 
-@defproc[(swap-args [fn (-> any/c any/c any)])
-         (-> any/c any/c any)]{
- A convenience procedure for use with procedures like @racket[foldl].
- Expects a procedure that accepts two arguments and produces a procedure that accepts those arguments in reverse.
- For example:
- @evaluated-block[
- (foldl (swap-args -) 100 '(10 20 30))
- ]
-}
 
 @defproc[(hash-ref* [a-hash hash?]
                     [keys list?])
